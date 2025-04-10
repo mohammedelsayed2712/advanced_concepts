@@ -23,44 +23,46 @@
                                         <span
                                             class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Price</span>
                                     </th>
-                                    <th width="20%"></th>
+                                    <th width="20%"><span
+                                            class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Actions</span>
+                                    </th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 @forelse($products as $product)
-                                    <tr class="bg-white">
-                                        <td>
-                                            {{ $product->name }}
-                                        </td>
-                                        <td>
-                                            {{ number_format($product->price, 2) }}
-                                        </td>
-                                        <td>
-                                            <div class="d-inline-flex">
-                                                <a href="{{ route('products.edit', $product) }}"
-                                                    class="btn btn-primary me-2">Edit</a>
-                                                <form action="{{ route('products.destroy', $product) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" onclick="return confirm('Are you sure?')"
-                                                        class="btn btn-danger">Delete</button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <tr class="bg-white">
+                                    <td>
+                                        {{ $product->name }}
+                                    </td>
+                                    <td>
+                                        {{ number_format($product->price, 2) }}
+                                    </td>
+                                    <td>
+                                        <div class="d-inline-flex">
+                                            <a href="{{ route('products.edit', $product) }}"
+                                                class="btn btn-primary me-2">Edit</a>
+                                            <form action="{{ route('products.destroy', $product) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" onclick="return confirm('Are you sure?')"
+                                                    class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
                                 @empty
-                                    <tr class="bg-white">
-                                        <td colspan="3">
-                                            {{ __('No products found') }}
-                                        </td>
-                                    </tr>
+                                <tr class="bg-white">
+                                    <td colspan="3">
+                                        {{ __('No products found') }}
+                                    </td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>
 
                         @if (count($products))
-                            {{ $products->links() }}
+                        {{ $products->links() }}
                         @endif
                     </div>
                 </div>
