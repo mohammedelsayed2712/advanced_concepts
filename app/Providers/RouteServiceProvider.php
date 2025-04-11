@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
-dump('RouteServiceProvider');
+// dump('RouteServiceProvider');
 class RouteServiceProvider extends ServiceProvider
 {
     /**

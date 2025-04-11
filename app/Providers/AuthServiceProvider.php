@@ -4,7 +4,7 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
-dump('AuthServiceProvider');
+// dump('AuthServiceProvider');
 class AuthServiceProvider extends ServiceProvider
 {
     /**
