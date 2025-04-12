@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', HomeController::class);
+// Route::get('/users/{id}', HomeController::class)->where('id', '[0-9]+');
+// Route::get('/users/{id}/{name}', HomeController::class)->whereNumber('id')->whereAlpha('name');
+// Route::get('/users/{id}/{name}', HomeController::class)->whereAlphaNumeric('id')->whereAlpha('name');
 
 Route::prefix('dashboard')->group(function () {
 

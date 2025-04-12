@@ -46,6 +46,9 @@ class RouteServiceProvider extends ServiceProvider
             // Route::middleware('web')
             //     ->prefix('merchant')
             //     ->group(base_path('routes/merchant.php'));
+
+            // Global Constraint
+            // Route::pattern('id', '[1-9]+');
         });
     }
 }
