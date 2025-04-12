@@ -34,3 +34,7 @@ Route::prefix('dashboard')->group(function () {
 // });
 
 // require __DIR__.'/auth.php';
+
+// Second way
+// require __DIR__.'/admin.php';
+// require __DIR__.'/merchant.php';
