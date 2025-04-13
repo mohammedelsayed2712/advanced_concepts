@@ -23,10 +23,10 @@ Route::get('/', HomeController::class);
 Route::prefix('dashboard')->group(function () {
 
     // ==================================== dashboard main page
-    Route::view('/', 'dashboard')->name('dashboard');
+    Route::view('/', 'dashboard')->name('dashboard')->middleware(['throttle:5,1']);
 
     // ============================================= products
-    Route::resource('products', ProductController::class);
+    Route::resource('products', ProductController::class)->middleware(['throttle:watch']);
 
 });
 
@@ -36,6 +36,12 @@ Route::fallback(function () {
     // abort(404);
     // return redirect()->route('dashboard');
     return to_route('dashboard');
+});
+
+route::middleware(['throttle:3,1'])->group(function () {
+    Route::get('/throttle', function () {
+        return 'You have been throttled';
+    });
 });
 
 // Route::middleware('auth')->group(function () {
