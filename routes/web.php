@@ -30,6 +30,14 @@ Route::prefix('dashboard')->group(function () {
 
 });
 
+// route fallback
+Route::fallback(function () {
+    // return 'This is page not found';
+    // abort(404);
+    // return redirect()->route('dashboard');
+    return to_route('dashboard');
+});
+
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
