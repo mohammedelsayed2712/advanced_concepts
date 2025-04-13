@@ -40,6 +40,8 @@
                                     </td>
                                     <td>
                                         <div class="d-inline-flex">
+                                            <a href="{{ route('products.show', $product) }}"
+                                                class="btn btn-primary me-2">Show</a>
                                             <a href="{{ route('products.edit', $product) }}"
                                                 class="btn btn-primary me-2">Edit</a>
                                             <form action="{{ route('products.destroy', $product) }}" method="POST">

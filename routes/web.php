@@ -23,11 +23,23 @@ Route::get('/', HomeController::class);
 Route::prefix('dashboard')->group(function () {
 
     // ==================================== dashboard main page
-    Route::view('/', 'dashboard')->name('dashboard')->middleware(['throttle:5,1']);
+    // Route::view('/', 'dashboard')->name('dashboard')->middleware(['throttle:5,1']);
+    Route::view('/', 'dashboard')->name('dashboard');
 
     // ============================================= products
-    Route::resource('products', ProductController::class)->middleware(['throttle:watch']);
+    // Route::resource('products', ProductController::class)->middleware(['throttle:watch']);
 
+    // First way for slug
+
+    // Route::get('products/show/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+    // Route::resource('products', ProductController::class)->except('show')->parameters([
+    //     'products' => 'product:slug',
+    // ]);
+
+    // Second way for slug
+
+    Route::get('products/show/{product}', [ProductController::class, 'show'])->name('products.show');
+    Route::resource('products', ProductController::class)->except('show');
 });
 
 // route fallback

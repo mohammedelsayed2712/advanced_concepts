@@ -22,7 +22,7 @@
                                     :value="$product->name" required autofocus />
                             </div>
 
-                            <!-- Name -->
+                            <!-- Price -->
                             <div class="mt-4">
                                 <x-label for="price" :value="__('Price')" />
 

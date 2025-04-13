@@ -1,9 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Http\Requests\ProductRequest;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -32,7 +31,8 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $productData = $request->validated();
+        $productData         = $request->validated();
+        $productData['slug'] = str()->slug($productData['name'], '-');
 
         $product = Product::create($productData);
 
@@ -75,6 +75,11 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('products.index');
+    }
+
+    public function show(Product $product)
+    {
+        return view('products.show', compact('product'));
     }
 
 }

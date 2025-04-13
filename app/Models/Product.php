@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,13 +8,17 @@ class Product extends Model
 {
     use HasFactory;
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'products';
-    
+
     /**
      * The primary key associated with the table.
      *
@@ -43,7 +46,7 @@ class Product extends Model
      * @var bool
      */
     public $timestamps = true;
-    
+
     /**
      * The attributes that are mass assignable.
      *
