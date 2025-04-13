@@ -31,8 +31,8 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $productData         = $request->validated();
-        $productData['slug'] = str()->slug($productData['name'], '-');
+        $productData = $request->validated();
+        // $productData['slug'] = str()->slug($productData['name'], '-');
 
         $product = Product::create($productData);
 
