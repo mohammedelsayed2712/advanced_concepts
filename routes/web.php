@@ -24,8 +24,8 @@ Route::prefix('dashboard')->group(function () {
 
     // ==================================== dashboard main page
     // Route::view('/', 'dashboard')->name('dashboard')->middleware(['throttle:5,1']);
-    Route::view('/', 'dashboard')->name('dashboard')->middleware('TestMiddleware:mohwammed');
-    // Route::view('/', 'dashboard')->name('dashboard')->withoutMiddleware('auth');
+    // Route::view('/', 'dashboard')->name('dashboard')->middleware('TestMiddleware:mohwammed');
+    Route::view('/', 'dashboard')->name('dashboard')->withoutMiddleware('auth');
 
     // ============================================= products
     // Route::resource('products', ProductController::class)->middleware(['throttle:watch']);
