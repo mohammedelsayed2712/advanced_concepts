@@ -1,36 +1,36 @@
 <?php
 // echo "Hello World testing";
 
-class Transaction {
+// class Transaction {
 
-    public const STATUS_PAID = "paid";
-    public const STATUS_PENDING = "pending";
-    public const STATUS_FAILED = "failed";
+//     public const STATUS_PAID = "paid";
+//     public const STATUS_PENDING = "pending";
+//     public const STATUS_FAILED = "failed";
 
-    public function __construct(
-        private float $amount,
-        private string $description
-        ) {
-    }
+//     public function __construct(
+//         private float $amount,
+//         private string $description
+//         ) {
+//     }
 
-    public function addTax(float $rate)
-    {
-        $this->amount += $this->amount * $rate / 100;
+//     public function addTax(float $rate)
+//     {
+//         $this->amount += $this->amount * $rate / 100;
 
-        return $this;
-    }
+//         return $this;
+//     }
 
-    public function applyDescount(float $rate)
-    {
-        $this->amount -= $this->amount * $rate / 100;
+//     public function applyDescount(float $rate)
+//     {
+//         $this->amount -= $this->amount * $rate / 100;
 
-        return $this;
-    }
+//         return $this;
+//     }
 
-    public function getAmount(): float {
-        return $this->amount;
-    }
-}
+//     public function getAmount(): float {
+//         return $this->amount;
+//     }
+// }
 
 // $transaction = new Transaction(100, "test transaction");
 // $class = Transaction::class;
@@ -119,19 +119,122 @@ class Transaction {
 //     echo $count;
 // }
 
-function test(): void
-{
-    static $count = 0;
+// function test(): void
+// {
+//     static $count = 0;
 
-    $count++;
+//     $count++;
 
-    echo $count . PHP_EOL;
+//     echo $count . PHP_EOL;
 
-    if ($count < 5) {
-        test();
+//     if ($count < 5) {
+//         test();
+//     }
+// }
+
+// function test(): void
+// {
+//     static $x = 10;
+
+//     echo $x;
+
+//     $x = 50;
+// }
+
+// test();
+// test();
+// test();
+// test();
+
+// class User
+// {
+//     public static int $count = 0;
+
+//     public function __construct()
+//     {
+//         self::$count++;
+//     }
+// }
+
+// echo User::$count . PHP_EOL;
+// echo User::$count . PHP_EOL;
+
+// class ApiClient
+// {
+//     public static string $baseUrl = 'https://api.example.com';
+// }
+
+// echo ApiClient::$baseUrl . PHP_EOL;
+
+// class BankAccount
+// {
+//     private float $balance = 1000;
+
+//     public function getBalance(): float
+//     {
+//         return $this->balance;
+//     }
+
+//     public function deposit(float $amount): void
+//     {
+//         if ($amount <= 0) {
+//             throw new InvalidArgumentException(
+//                 'Deposit amount must be positive.'
+//             );
+//         }
+
+//         $this->balance += $amount;
+//     }
+// }
+
+// $account = new BankAccount();
+
+// $account->deposit(500);
+
+// echo $account->getBalance(); // 1500
+
+abstract class Field {
+    public function __construct(
+        protected string $name,
+    ) {}
+
+    abstract public function render(): string;
+}
+
+class TextField extends Field {
+    public function render(): string {
+        return "<input type='text' name='{$this->name}' placeholder='Enter {$this->name}'>";
     }
 }
 
-test();
-// test();
-// test();
+// $textField = new TextField('name');
+// echo $textField->render();
+
+class BooleanField extends Field {
+    public function render(): string {
+        return "<input type='checkbox' name='{$this->name}'>";
+    }
+}
+
+// $booleanField = new BooleanField('is_active');
+// echo $booleanField->render();
+
+class CheckboxField extends BooleanField {
+    public function render(): string {
+        return "<input type='checkbox' name='{$this->name}[]'>";
+    }
+}
+
+// $checkboxField = new CheckboxField('categories');
+// echo $checkboxField->render();
+
+$fileds = [
+    // new Field('basename'),
+    new TextField('name'),
+    new BooleanField('is_active'),
+    new CheckboxField('categories')
+];
+
+foreach ($fileds as $field) {
+    echo $field->render()."<br>";
+}
