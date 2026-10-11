@@ -193,48 +193,144 @@
 
 // echo $account->getBalance(); // 1500
 
-abstract class Field {
-    public function __construct(
-        protected string $name,
-    ) {}
+// abstract class Field {
+//     public function __construct(
+//         protected string $name,
+//     ) {}
 
-    abstract public function render(): string;
-}
+//     abstract public function render(): string;
+// }
 
-class TextField extends Field {
-    public function render(): string {
-        return "<input type='text' name='{$this->name}' placeholder='Enter {$this->name}'>";
-    }
-}
+// class TextField extends Field {
+//     public function render(): string {
+//         return "<input type='text' name='{$this->name}' placeholder='Enter {$this->name}'>";
+//     }
+// }
 
 // $textField = new TextField('name');
 // echo $textField->render();
 
-class BooleanField extends Field {
-    public function render(): string {
-        return "<input type='checkbox' name='{$this->name}'>";
-    }
-}
+// class BooleanField extends Field {
+//     public function render(): string {
+//         return "<input type='checkbox' name='{$this->name}'>";
+//     }
+// }
 
 // $booleanField = new BooleanField('is_active');
 // echo $booleanField->render();
 
-class CheckboxField extends BooleanField {
-    public function render(): string {
-        return "<input type='checkbox' name='{$this->name}[]'>";
-    }
-}
+// class CheckboxField extends BooleanField {
+//     public function render(): string {
+//         return "<input type='checkbox' name='{$this->name}[]'>";
+//     }
+// }
 
 // $checkboxField = new CheckboxField('categories');
 // echo $checkboxField->render();
 
-$fileds = [
-    // new Field('basename'),
-    new TextField('name'),
-    new BooleanField('is_active'),
-    new CheckboxField('categories')
-];
+// $fileds = [
+//     // new Field('basename'),
+//     new TextField('name'),
+//     new BooleanField('is_active'),
+//     new CheckboxField('categories')
+// ];
 
-foreach ($fileds as $field) {
-    echo $field->render()."<br>";
+// foreach ($fileds as $field) {
+//     echo $field->render()."<br>";
+// }
+
+// abstract class Employee
+// {
+//     public function __construct(protected string $name)
+//     {
+//     }
+
+//     abstract public function calculateSalary(): float;
+
+//     public function getName(): string
+//     {
+//         return $this->name;
+//     }
+// }
+
+// class Developer extends Employee
+// {
+//     public function __construct(string $name)
+//     {
+//         parent::__construct($name);
+//     }
+
+//     public function calculateSalary(): float
+//     {
+//         return 30000;
+//     }
+// }
+
+// $developer = new Developer('Mohammed Elsayed');
+
+// echo $developer->getName();
+// echo $developer->calculateSalary();
+
+// abstract class DocumentExporter
+// {
+//     abstract public function export();
+
+//     public function validateData(){}
+// }
+
+// class CsvExporter extends DocumentExporter
+// {
+//     public function export()
+//     {
+//         echo "Exporting data to CSV format";
+//     }
+// }
+
+// class JsonExporter extends DocumentExporter
+// {
+//     public function export()
+//     {
+//         echo "Exporting data to JSON format";
+//     }
+// }
+
+// class XmlExporter extends DocumentExporter
+// {
+//     public function export()
+//     {
+//         echo "Exporting data to XML format";
+//     }
+// }
+
+interface DebtCollector
+{
+    public function collect(float $owedAmount): float;
 }
+
+class collectonAgency implements DebtCollector
+{
+    public function collect(float $owedAmount): float
+    {
+        $guaranteedAmount = $owedAmount * 0.5;
+
+        return mt_rand($guaranteedAmount, $owedAmount);
+    }
+}
+
+// $collector = new collectonAgency();
+
+// echo $collector->collect(1000).PHP_EOL;
+
+class debtCollectionService
+{
+    public function collectDebt(collectonAgency $collector): float
+    {
+        $owedAmount = mt_rand(100, 1000);
+        $collectedAmount = $collector->collect($owedAmount);
+
+        echo "collected $'{$collectedAmount}' from a debt of $'{$owedAmount}'" . PHP_EOL;
+    }
+}
+
+$service = new debtCollectionService();
+echo $service->collectDebt(new collectonAgency());
