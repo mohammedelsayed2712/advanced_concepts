@@ -302,35 +302,80 @@
 //     }
 // }
 
-interface DebtCollector
-{
-    public function collect(float $owedAmount): float;
-}
+// interface DebtCollector
+// {
+//     public function collect(float $owedAmount): float;
+// }
 
-class collectonAgency implements DebtCollector
-{
-    public function collect(float $owedAmount): float
-    {
-        $guaranteedAmount = $owedAmount * 0.5;
+// class collectonAgency implements DebtCollector
+// {
+//     public function collect(float $owedAmount): float
+//     {
+//         $guaranteedAmount = $owedAmount * 0.5;
 
-        return mt_rand($guaranteedAmount, $owedAmount);
-    }
-}
+//         return mt_rand($guaranteedAmount, $owedAmount);
+//     }
+// }
 
 // $collector = new collectonAgency();
 
 // echo $collector->collect(1000).PHP_EOL;
 
-class debtCollectionService
-{
-    public function collectDebt(collectonAgency $collector): float
-    {
-        $owedAmount = mt_rand(100, 1000);
-        $collectedAmount = $collector->collect($owedAmount);
+// class debtCollectionService
+// {
+//     public function collectDebt(collectonAgency $collector): float
+//     {
+//         $owedAmount = mt_rand(100, 1000);
+//         $collectedAmount = $collector->collect($owedAmount);
 
-        echo "collected $'{$collectedAmount}' from a debt of $'{$owedAmount}'" . PHP_EOL;
+//         echo "collected $'{$collectedAmount}' from a debt of $'{$owedAmount}'" . PHP_EOL;
+//     }
+// }
+
+// $service = new debtCollectionService();
+// echo $service->collectDebt(new collectonAgency());
+
+class ClassA {
+    protected static string $name = "Class A";
+    public static function getName(): string
+    {
+        var_dump(get_called_class());
+        // return self::$name;
+        return static::$name;
     }
 }
+class ClassB extends ClassA {
+    protected static string $name = "Class B";
+}
 
-$service = new debtCollectionService();
-echo $service->collectDebt(new collectonAgency());
+$classA = new ClassA();
+$classB = new ClassB();
+
+// var_dump($classA instanceof ClassB);
+// var_dump($classB instanceof ClassA);
+
+// echo $classA->getName() . PHP_EOL;
+// echo '<br>';
+// echo $classB->getName() . PHP_EOL;
+// echo '<br>';
+
+echo ClassA::getName() . PHP_EOL;
+echo '<br>';
+echo ClassB::getName() . PHP_EOL;
+
+// class ParentClass
+// {
+//     public static function getClassName(): string
+//     {
+//         return static::class;
+//     }
+// }
+
+// class ChildClass extends ParentClass
+// {
+// }
+
+// echo ParentClass::getClassName();
+// // ParentClass
+// echo '<br>';
+// echo ChildClass::getClassName();
