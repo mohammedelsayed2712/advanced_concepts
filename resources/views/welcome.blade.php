@@ -335,21 +335,21 @@
 // $service = new debtCollectionService();
 // echo $service->collectDebt(new collectonAgency());
 
-class ClassA {
-    protected static string $name = "Class A";
-    public static function getName(): string
-    {
-        var_dump(get_called_class());
-        // return self::$name;
-        return static::$name;
-    }
-}
-class ClassB extends ClassA {
-    protected static string $name = "Class B";
-}
+// class ClassA {
+//     protected static string $name = "Class A";
+//     public static function getName(): string
+//     {
+//         var_dump(get_called_class());
+//         // return self::$name;
+//         return static::$name;
+//     }
+// }
+// class ClassB extends ClassA {
+//     protected static string $name = "Class B";
+// }
 
-$classA = new ClassA();
-$classB = new ClassB();
+// $classA = new ClassA();
+// $classB = new ClassB();
 
 // var_dump($classA instanceof ClassB);
 // var_dump($classB instanceof ClassA);
@@ -359,9 +359,9 @@ $classB = new ClassB();
 // echo $classB->getName() . PHP_EOL;
 // echo '<br>';
 
-echo ClassA::getName() . PHP_EOL;
-echo '<br>';
-echo ClassB::getName() . PHP_EOL;
+// echo ClassA::getName() . PHP_EOL;
+// echo '<br>';
+// echo ClassB::getName() . PHP_EOL;
 
 // class ParentClass
 // {
@@ -379,3 +379,281 @@ echo ClassB::getName() . PHP_EOL;
 // // ParentClass
 // echo '<br>';
 // echo ChildClass::getClassName();
+
+// trait Loggable
+// {
+//     public function logActivity(string $message): void
+//     {
+//         echo "[LOG]: $message" . PHP_EOL . '<br>';
+//     }
+// }
+
+// class User {
+//     use Loggable;
+// }
+
+// class Product {
+//     use Loggable;
+// }
+
+// $user = new User();
+// $user->logActivity("User logged in");
+// $product = new Product();
+// $product->logActivity("Product created");
+
+// trait Timestampable
+// {
+//     public function getCurrentTimestamp(): int
+//     {
+//         return time();
+//     }
+// }
+
+// class Order
+// {
+//     use Timestampable;
+// }
+
+// $order = new Order();
+// echo $order->getCurrentTimestamp(). '<br>';
+
+// trait HasName
+// {
+//     public function getFormattedName(): string
+//     {
+//         return strtoupper($this->name);
+//     }
+// }
+
+// class User
+// {
+//     use HasName;
+
+//     public function __construct(
+//         public string $name
+//     ) {}
+// }
+
+// $user = new User('Mohammed');
+// echo $user->getFormattedName();
+
+// trait Loggable
+// {
+//     public function log(string $message): void
+//     {
+//         echo $message.PHP_EOL . '<br>';
+//     }
+// }
+
+// trait Notifiable
+// {
+//     public function notify(string $message): void
+//     {
+//         echo "Notification: {$message}";
+//     }
+// }
+
+// class User
+// {
+//     use Loggable, Notifiable;
+// }
+
+// $user = new User();
+// $user->log('Hello this is a log message. from Loggable trait.');
+// $user->notify('Hello this is a notification message. from Notifiable trait.');
+
+// trait HasUuid
+// {
+//     public function generateUuid(): string
+//     {
+//         return uniqid('user_', true);
+//     }
+// }
+
+// trait HasStatus
+// {
+//     public function isActive(): bool
+//     {
+//         return true;
+//     }
+// }
+
+// trait HasLogging
+// {
+//     public function log(string $message): void
+//     {
+//         echo '<br>'."[LOG] {$message}";
+//     }
+// }
+
+// class User
+// {
+//     use HasUuid, HasStatus, HasLogging;
+// }
+
+// $user = new User();
+
+// echo $user->generateUuid().PHP_EOL . '<br>';
+// var_dump($user->isActive());
+// $user->log('User created');
+
+// trait FileLogger
+// {
+//     public function log(): void
+//     {
+//         echo "Logging to a file".PHP_EOL . '<br>';
+//     }
+// }
+
+// trait DatabaseLogger
+// {
+//     public function log(): void
+//     {
+//         echo "Logging to a database";
+//     }
+// }
+
+// class User
+// {
+//     use FileLogger, DatabaseLogger {
+//         FileLogger::log insteadof DatabaseLogger;
+
+//         DatabaseLogger::log as logToDatabase;
+//     }
+// }
+
+// $user = new User();
+// $user->log();
+// $user->logToDatabase();
+
+// trait UserHelper
+// {
+//     public function calculateScore(): int
+//     {
+//         return 100;
+//     }
+// }
+
+// class User
+// {
+//     use UserHelper {
+//         calculateScore as private getScore;
+//     }
+
+//     public function getScore(): int
+//     {
+//         return $this->calculateScore();
+//     }
+// }
+
+// $user = new User();
+// echo $user->getScore(); // 100
+// echo '<br>';
+// echo $user->calculateScore(); // 100
+
+// trait Greeting
+// {
+//     public function sayHello(): void
+//     {
+//         echo "Hello from trait";
+//     }
+// }
+
+// class User
+// {
+//     use Greeting;
+
+//     public function sayHello(): void
+//     {
+//         echo "Hello from class";
+//     }
+// }
+
+// $user = new User();
+// $user->sayHello();
+
+// class ParentUser
+// {
+//     public function sayHello(): void
+//     {
+//         echo "Hello from parent";
+//     }
+// }
+
+// trait Greeting
+// {
+//     public function sayHello(): void
+//     {
+//         echo "Hello from trait";
+//     }
+// }
+
+// class User extends ParentUser
+// {
+//     use Greeting;
+// }
+
+// $user = new User();
+// $user->sayHello();
+
+// trait SendsNotifications
+// {
+//     abstract protected function getRecipient(): string;
+
+//     public function sendNotification(string $message): void
+//     {
+//         $recipient = $this->getRecipient();
+
+//         echo "Sending '{$message}' to {$recipient}";
+//     }
+// }
+
+// class User
+// {
+//     use SendsNotifications;
+
+//     public function __construct(
+//         private string $email
+//     ) {}
+
+//     protected function getRecipient(): string
+//     {
+//         return $this->email;
+//     }
+// }
+
+// $user = new User('user@example.com');
+
+// $user->sendNotification('Welcome!');
+
+// trait HasapiVersion
+// {
+//     public const API_VERSION = 'v1';
+// }
+
+// class ApiClient
+// {
+//     use HasApiVersion;
+// }
+
+// echo ApiClient::API_VERSION; // v1
+
+trait HasCounter
+{
+    public static int $count = 0;
+
+    public static function increment(): void
+    {
+        self::$count++;
+    }
+}
+
+class User
+{
+    use HasCounter;
+}
+
+User::increment();
+User::increment();
+
+echo User::$count;
