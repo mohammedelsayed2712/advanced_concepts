@@ -638,22 +638,39 @@
 
 // echo ApiClient::API_VERSION; // v1
 
-trait HasCounter
-{
-    public static int $count = 0;
+// trait HasCounter
+// {
+//     public static int $count = 0;
 
-    public static function increment(): void
-    {
-        self::$count++;
+//     public static function increment(): void
+//     {
+//         self::$count++;
+//     }
+// }
+
+// class User
+// {
+//     use HasCounter;
+// }
+
+// User::increment();
+// User::increment();
+
+// echo User::$count;class PriceCalculator
+
+
+class PriceCalculator
+{
+    public function applyDiscount(
+        float $price,
+        float $discountPercentage
+    ): float {
+        return $price - ($price * $discountPercentage / 100);
     }
 }
 
-class User
-{
-    use HasCounter;
-}
+$calculator = new PriceCalculator();
 
-User::increment();
-User::increment();
+$result = $calculator->applyDiscount(100, 10);
 
-echo User::$count;
+assert($result === 90.0);
