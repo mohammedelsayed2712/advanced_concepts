@@ -17,15 +17,23 @@ use PHPUnit\Framework\TestCase;
  */
 class RouterTest extends TestCase
 {
+    private Router $router;
+    // This method is called before each test method is executed.
+    // You can use it to set up any common test data or configurations.
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->router = new Router();
+    }
     public function testRegisterRoute(): void
     {
         // 1. given that we have a router instance(object)
         // Prepare the objects, inputs, and conditions required for the test.
-        $router = new Router();
+        // $router = new Router();
 
         // 2. when we call the register method with a request method, route, and action
         // Execute the behavior being tested.
-        $router->register('get', '/users', ['Users', 'index']);
+        $this->router->register('get', '/users', ['Users', 'index']);
 
         // 3. then we assert that the route is registered in the router's routes array
         // Verify that the actual result matches your expectation.
@@ -35,8 +43,39 @@ class RouterTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $router->routes());
+        $this->assertEquals($expected, $this->router->routes());
 
+    }
+
+    public function testGetMethod(): void
+    {
+        // 1. Arrange
+        // $router = new Router();
+        // 2. Act
+        $this->router->get('/users', ['Users', 'index']);
+        // 3. Assert
+        $this->assertArrayHasKey('get', $this->router->routes());
+    }
+
+    public function testPostMethod(): void
+    {
+        // 1. Arrange
+        $router = new Router();
+        // 2. Act
+        $router->post('/users', ['Users', 'store']);
+        // 3. Assert
+        $this->assertArrayHasKey('post', $router->routes());
+    }
+
+    /**
+     * @test
+     */
+    public function there_is_no_route_registered_for_the_given_request_method_and_route(): void
+    {
+        // 1. Arrange
+        // $router = new Router();
+        // 2. Act & Assert
+        $this->assertEmpty($this->router->routes());
     }
 
 }
