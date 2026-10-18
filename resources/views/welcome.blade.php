@@ -118,33 +118,33 @@
 // {
 // }
 
- class UserService
-{
-    public function __construct(
-        // private UserRepository $repository,
-        // protected string $format,
-        // public int $limit,
+//  class UserService
+// {
+//     public function __construct(
+//         // private UserRepository $repository,
+//         // protected string $format,
+//         // public int $limit,
 
-        private string $name,
-    ) {
-    }
+//         private string $name,
+//     ) {
+//     }
 
-    // public function findUser(int $id): string
-    // {
-    //     return "User ID: {$id}";
-    // }
+//     // public function findUser(int $id): string
+//     // {
+//     //     return "User ID: {$id}";
+//     // }
 
-     public function name(): string
-    {
-        return $this->name;
-    }
-}
+//      public function name(): string
+//     {
+//         return $this->name;
+//     }
+// }
 
-$reflection = new ReflectionClass(UserService::class);
+// $reflection = new ReflectionClass(UserService::class);
 
-$service = $reflection->newInstanceArgs(['Mohammed']);
+// $service = $reflection->newInstanceArgs(['Mohammed']);
 
-echo $service->name();
+// echo $service->name();
 
 // foreach ($reflection->getMethods() as $method) {
 //     echo $method->getName() . PHP_EOL . "<br>";
@@ -168,3 +168,44 @@ echo $service->name();
 // $logger = $reflection->newInstance();
 
 // echo $logger->log();
+
+class DatabaseConnection
+{
+    public function connect(): string
+    {
+        return 'Database connected';
+    }
+}
+
+class UserRepository
+{
+    public function __construct(
+        private DatabaseConnection $database
+    ) {
+    }
+
+    public function find(int $id): string
+    {
+        return $this->database->connect()
+            . " | Finding user {$id}";
+    }
+}
+
+class UserService
+{
+    public function __construct(
+        private UserRepository $repository
+    ) {
+    }
+
+    public function findUser(int $id): string
+    {
+        return $this->repository->find($id);
+    }
+}
+
+$database = new DatabaseConnection();
+$repository = new UserRepository($database);
+$userService = new UserService($repository);
+
+echo $userService->findUser(1);
