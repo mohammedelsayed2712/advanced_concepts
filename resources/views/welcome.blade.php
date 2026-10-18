@@ -659,18 +659,210 @@
 // echo User::$count;class PriceCalculator
 
 
-class PriceCalculator
+// class PriceCalculator
+// {
+//     public function applyDiscount(
+//         float $price,
+//         float $discountPercentage
+//     ): float {
+//         return $price - ($price * $discountPercentage / 100);
+//     }
+// }
+
+// $calculator = new PriceCalculator();
+
+// $result = $calculator->applyDiscount(100, 10);
+
+// assert($result === 90.0);
+
+
+/**
+ * without using DI(dependency injection)
+ */
+// class StripePayment
+// {
+//     public function pay(float $amount): string
+//     {
+//         return "Paid {$amount} using Stripe";
+//     }
+// }
+
+// class OrderService
+// {
+//     private StripePayment $payment;
+
+//     public function __construct()
+//     {
+//         $this->payment = new StripePayment();
+//     }
+
+//     public function checkout(float $amount): string
+//     {
+//         return $this->payment->pay($amount);
+//     }
+// }
+
+// $orderService = new OrderService();
+
+// echo $orderService->checkout(500);
+
+/*
+ * using DI(dependency injection)
+ */
+// class StripePayment
+// {
+//     public function pay(float $amount): string
+//     {
+//         return "Paid {$amount} using Stripe";
+//     }
+// }
+
+// class OrderService
+// {
+//     public function __construct(
+//         private StripePayment $payment
+//     ) {}
+
+//     public function checkout(float $amount): string
+//     {
+//         return $this->payment->pay($amount);
+//     }
+// }
+
+// $payment = new StripePayment();
+
+// $orderService = new OrderService($payment);
+
+// echo $orderService->checkout(500);
+
+// class Mailer
+// {
+//     public function send(string $message): void
+//     {
+//         echo "Sending email: {$message}";
+//     }
+// }
+
+// class OrderService
+// {
+
+//     public function __construct(private Mailer $mailer)
+//     {
+//     }
+
+//     public function placeOrder(): void
+//     {
+//         $this->mailer->send('Order placed');
+//     }
+// }
+// $mailer = new Mailer();
+
+// $orderService = new OrderService($mailer);
+// echo $orderService->placeOrder();
+
+class DatabaseConnection
 {
-    public function applyDiscount(
-        float $price,
-        float $discountPercentage
-    ): float {
-        return $price - ($price * $discountPercentage / 100);
+    public function connect(): string
+    {
+        return 'Database connected';
     }
 }
 
-$calculator = new PriceCalculator();
+class UserRepository
+{
+    public function __construct(
+        private DatabaseConnection $database
+    ) {}
 
-$result = $calculator->applyDiscount(100, 10);
+    public function find(int $id): string
+    {
+        return $this->database->connect()
+            . " | Finding user {$id}";
+    }
+}
 
-assert($result === 90.0);
+class UserService
+{
+    public function __construct(
+        private UserRepository $users
+    ) {}
+
+    public function getUser(int $id): string
+    {
+        return $this->users->find($id);
+    }
+}
+
+class Container
+{
+    /**
+     * Summary of bindings
+     * @var array
+     *
+     * This stores the construction instructions.
+     * Conceptually:
+     * [
+     * DatabaseConnection::class => $factory,
+     * UserRepository::class => $factory,
+     * UserService::class => $factory,
+     * ]
+     * (The factory) is a callable that knows how to construct an object.
+     */
+    private array $bindings = [];
+
+     /**
+      * Summary of bind
+      * @param string $abstract $abstract identifies the thing we want to resolve. It could be a concrete class name or an interface name.
+      * @param callable $factory $factory defines how to create the corresponding instance.
+      * @return void
+      */
+     public function bind(
+        string $abstract,
+        callable $factory
+    ): void {
+        $this->bindings[$abstract] = $factory;
+    }
+
+    /**
+     * This retrieves the registered factory and invokes it, passing the container itself.
+     * Passing the container allows a factory to resolve other dependencies.
+     * Summary of make
+     * @param string $abstract
+     * @throws RuntimeException
+     * @return mixed
+     */
+    public function make(string $abstract): mixed
+    {
+        if (!isset($this->bindings[$abstract])) {
+            throw new RuntimeException(
+                "No binding registered for {$abstract}"
+            );
+        }
+
+        return ($this->bindings[$abstract])($this);
+    }
+}
+
+$container = new Container();
+
+$container->bind(
+    DatabaseConnection::class,
+    fn (Container $container) => new DatabaseConnection()
+);
+
+$container->bind(
+    UserRepository::class,
+    fn (Container $container) => new UserRepository(
+        $container->make(DatabaseConnection::class)
+    )
+);
+
+$container->bind(
+    UserService::class,
+    fn (Container $container) => new UserService(
+        $container->make(UserRepository::class)
+    )
+);
+
+$userService = $container->make(UserService::class);
+echo $userService->getUser(10);
