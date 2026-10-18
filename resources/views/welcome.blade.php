@@ -1,868 +1,170 @@
 <?php
-// echo "Hello World testing";
 
-// class Transaction {
 
-//     public const STATUS_PAID = "paid";
-//     public const STATUS_PENDING = "pending";
-//     public const STATUS_FAILED = "failed";
-
+// class UserRepository
+// {
 //     public function __construct(
-//         private float $amount,
-//         private string $description
-//         ) {
-//     }
+//         private string $database = 'default'
+//     ) {}
 
-//     public function addTax(float $rate)
+//     public function connect(): string
 //     {
-//         $this->amount += $this->amount * $rate / 100;
-
-//         return $this;
+//         return 'Database connected to ' . $this->database;
 //     }
+// }
 
-//     public function applyDescount(float $rate)
+// class UserService
+// {
+//     public function __construct(
+//         private UserRepository $repository
+//     ) {}
+
+//     public function findUser(int $id): ?array
 //     {
-//         $this->amount -= $this->amount * $rate / 100;
-
-//         return $this;
-//     }
-
-//     public function getAmount(): float {
-//         return $this->amount;
+//         return ['id' => $id];
 //     }
 // }
 
-// $transaction = new Transaction(100, "test transaction");
-// $class = Transaction::class;
+// $servive = new UserService(
+//     new UserRepository()
+// );
 
-// $transaction = (new Transaction(100, "test transaction"))
-//                 ->addTax(8)
-//                 ->applyDescount(10)
-//                 ->getAmount();
+// // var_dump($servive);
+// echo $servive->findUser(10);
 
-// $transaction1 = (new $class(100, "test transaction"))
-//                 ->addTax(8)
-//                 ->applyDescount(10)
-//                 ->getAmount();
-
-// $transaction2 = (new $class(500, "test transaction"))
-//                 ->addTax(8)
-//                 ->applyDescount(30)
-//                 ->getAmount();
-
-// $transaction->addTax(8);
-// $transaction->applyDescount(10);
-
-// // $transaction->amount = 10;
-// $transaction->description = "test";
-
-// // echo $transaction;
-// // var_dump($transaction->amount);
-
-// var_dump($transaction1, $transaction2);
-
-// $object = new stdClass();
-// $object->name = "Mohammed";
-// $object->age = 30;
-// var_dump($object);
-
-//  echo Transaction::STATUS_PAID;
-
-// $transaction = new Transaction(100, "test transaction");
-
-/**
- * @normal function
- * @param int $a
- * @param int $b
- * @return int
- */
-// function counter(): void
+// class UserService
 // {
-//     $count = 0;
-
-//     $count++;
-
-//     echo $count;
-// }
-
-
-/**
- * @static function
- * @param int $a
- * @param int $b
- * @return int
- */
-// function counter(): void
-// {
-//     static $count = 0;
-
-//     $count++;
-
-//     echo $count;
-// }
-
-
-/**
- * @golbal function
- * @param int $a
- * @param int $b
- * @return int
- */
-// $count = 0;
-
-// function counter(): void
-// {
-//     global $count;
-
-//     $count++;
-
-//     echo $count;
-// }
-
-// function test(): void
-// {
-//     static $count = 0;
-
-//     $count++;
-
-//     echo $count . PHP_EOL;
-
-//     if ($count < 5) {
-//         test();
-//     }
-// }
-
-// function test(): void
-// {
-//     static $x = 10;
-
-//     echo $x;
-
-//     $x = 50;
-// }
-
-// test();
-// test();
-// test();
-// test();
-
-// class User
-// {
-//     public static int $count = 0;
-
-//     public function __construct()
+//     public function findUser(int $id): string
 //     {
-//         self::$count++;
+//         return "User ID: {$id}";
 //     }
 // }
 
-// echo User::$count . PHP_EOL;
-// echo User::$count . PHP_EOL;
+// $reflection = new ReflectionClass(UserService::class);
 
-// class ApiClient
+// echo $reflection->getName() . PHP_EOL . "<br>"; // create obj that describe class
+// echo $reflection->getShortName() . PHP_EOL . "<br>";
+// echo $reflection->getFileName() . PHP_EOL . "<br>";
+
+// class UserRepository
 // {
-//     public static string $baseUrl = 'https://api.example.com';
 // }
 
-// echo ApiClient::$baseUrl . PHP_EOL;
-
-// class BankAccount
+// class UserService
 // {
-//     private float $balance = 1000;
+//     public function __construct(
+//         private UserRepository $repository,
+//         int $cacheTtl = 300,
+//         string $cacheDriver = 'redis',
+//     ) {
+//     }
+// }
 
-//     public function getBalance(): float
-//     {
-//         return $this->balance;
+// $reflection = new ReflectionClass(UserService::class);
+// $constructor = $reflection->getConstructor();
+
+// // if ($constructor !== null) {
+// //     echo $constructor->getName().PHP_EOL . "<br>";
+// // }
+
+// // echo $reflection->getName() . PHP_EOL . "<br>";
+// // var_dump($constructor);
+
+// foreach ($constructor->getParameters() as $parameter) {
+//     echo 'Name: ' . $parameter->getName() . PHP_EOL . "<br>";
+//     echo 'Type: ' . $parameter->getType() . PHP_EOL . "<br>";
+//     echo 'Optional: ' . ($parameter->isOptional() ? 'yes' : 'no') . PHP_EOL . "<br>";
+//     echo '---' . PHP_EOL . "<br>";
+// }
+
+// class UserRepository
+// {
+// }
+
+// class ReportService
+// {
+//     public function __construct(
+//         UserRepository $repository,
+//         string $format,
+//         int $limit,
+//     ) {
+//     }
+// }
+
+// $reflection = new ReflectionClass(ReportService::class);
+// $constructor = $reflection->getConstructor();
+
+// foreach ($constructor->getParameters() as $parameter) {
+//     $type = $parameter->getType();
+
+//     if ($type === null) {
+//         echo $parameter->getName() . ': no declared type' . PHP_EOL . "<br>";
+//         continue;
 //     }
 
-//     public function deposit(float $amount): void
-//     {
-//         if ($amount <= 0) {
-//             throw new InvalidArgumentException(
-//                 'Deposit amount must be positive.'
-//             );
+//     if ($type instanceof ReflectionNamedType) {
+//         echo $parameter->getName() . ': ';
+//         echo $type->getName() . PHP_EOL . "<br>";
+
+//         if ($type->isBuiltin()) {
+//             echo "This is a built-in type." . PHP_EOL . "<br>";
+//         } else {
+//             echo "This is a class, interface, or other named type." . PHP_EOL . "<br>";
 //         }
-
-//         $this->balance += $amount;
 //     }
 // }
 
-// $account = new BankAccount();
-
-// $account->deposit(500);
-
-// echo $account->getBalance(); // 1500
-
-// abstract class Field {
-//     public function __construct(
-//         protected string $name,
-//     ) {}
-
-//     abstract public function render(): string;
-// }
-
-// class TextField extends Field {
-//     public function render(): string {
-//         return "<input type='text' name='{$this->name}' placeholder='Enter {$this->name}'>";
-//     }
-// }
-
-// $textField = new TextField('name');
-// echo $textField->render();
-
-// class BooleanField extends Field {
-//     public function render(): string {
-//         return "<input type='checkbox' name='{$this->name}'>";
-//     }
-// }
-
-// $booleanField = new BooleanField('is_active');
-// echo $booleanField->render();
-
-// class CheckboxField extends BooleanField {
-//     public function render(): string {
-//         return "<input type='checkbox' name='{$this->name}[]'>";
-//     }
-// }
-
-// $checkboxField = new CheckboxField('categories');
-// echo $checkboxField->render();
-
-// $fileds = [
-//     // new Field('basename'),
-//     new TextField('name'),
-//     new BooleanField('is_active'),
-//     new CheckboxField('categories')
-// ];
-
-// foreach ($fileds as $field) {
-//     echo $field->render()."<br>";
-// }
-
-// abstract class Employee
-// {
-//     public function __construct(protected string $name)
-//     {
-//     }
-
-//     abstract public function calculateSalary(): float;
-
-//     public function getName(): string
-//     {
-//         return $this->name;
-//     }
-// }
-
-// class Developer extends Employee
-// {
-//     public function __construct(string $name)
-//     {
-//         parent::__construct($name);
-//     }
-
-//     public function calculateSalary(): float
-//     {
-//         return 30000;
-//     }
-// }
-
-// $developer = new Developer('Mohammed Elsayed');
-
-// echo $developer->getName();
-// echo $developer->calculateSalary();
-
-// abstract class DocumentExporter
-// {
-//     abstract public function export();
-
-//     public function validateData(){}
-// }
-
-// class CsvExporter extends DocumentExporter
-// {
-//     public function export()
-//     {
-//         echo "Exporting data to CSV format";
-//     }
-// }
-
-// class JsonExporter extends DocumentExporter
-// {
-//     public function export()
-//     {
-//         echo "Exporting data to JSON format";
-//     }
-// }
-
-// class XmlExporter extends DocumentExporter
-// {
-//     public function export()
-//     {
-//         echo "Exporting data to XML format";
-//     }
-// }
-
-// interface DebtCollector
-// {
-//     public function collect(float $owedAmount): float;
-// }
-
-// class collectonAgency implements DebtCollector
-// {
-//     public function collect(float $owedAmount): float
-//     {
-//         $guaranteedAmount = $owedAmount * 0.5;
-
-//         return mt_rand($guaranteedAmount, $owedAmount);
-//     }
-// }
-
-// $collector = new collectonAgency();
-
-// echo $collector->collect(1000).PHP_EOL;
-
-// class debtCollectionService
-// {
-//     public function collectDebt(collectonAgency $collector): float
-//     {
-//         $owedAmount = mt_rand(100, 1000);
-//         $collectedAmount = $collector->collect($owedAmount);
-
-//         echo "collected $'{$collectedAmount}' from a debt of $'{$owedAmount}'" . PHP_EOL;
-//     }
-// }
-
-// $service = new debtCollectionService();
-// echo $service->collectDebt(new collectonAgency());
-
-// class ClassA {
-//     protected static string $name = "Class A";
-//     public static function getName(): string
-//     {
-//         var_dump(get_called_class());
-//         // return self::$name;
-//         return static::$name;
-//     }
-// }
-// class ClassB extends ClassA {
-//     protected static string $name = "Class B";
-// }
-
-// $classA = new ClassA();
-// $classB = new ClassB();
-
-// var_dump($classA instanceof ClassB);
-// var_dump($classB instanceof ClassA);
-
-// echo $classA->getName() . PHP_EOL;
-// echo '<br>';
-// echo $classB->getName() . PHP_EOL;
-// echo '<br>';
-
-// echo ClassA::getName() . PHP_EOL;
-// echo '<br>';
-// echo ClassB::getName() . PHP_EOL;
-
-// class ParentClass
-// {
-//     public static function getClassName(): string
-//     {
-//         return static::class;
-//     }
-// }
-
-// class ChildClass extends ParentClass
+// class UserRepository
 // {
 // }
 
-// echo ParentClass::getClassName();
-// // ParentClass
-// echo '<br>';
-// echo ChildClass::getClassName();
-
-// trait Loggable
-// {
-//     public function logActivity(string $message): void
-//     {
-//         echo "[LOG]: $message" . PHP_EOL . '<br>';
-//     }
-// }
-
-// class User {
-//     use Loggable;
-// }
-
-// class Product {
-//     use Loggable;
-// }
-
-// $user = new User();
-// $user->logActivity("User logged in");
-// $product = new Product();
-// $product->logActivity("Product created");
-
-// trait Timestampable
-// {
-//     public function getCurrentTimestamp(): int
-//     {
-//         return time();
-//     }
-// }
-
-// class Order
-// {
-//     use Timestampable;
-// }
-
-// $order = new Order();
-// echo $order->getCurrentTimestamp(). '<br>';
-
-// trait HasName
-// {
-//     public function getFormattedName(): string
-//     {
-//         return strtoupper($this->name);
-//     }
-// }
-
-// class User
-// {
-//     use HasName;
-
-//     public function __construct(
-//         public string $name
-//     ) {}
-// }
-
-// $user = new User('Mohammed');
-// echo $user->getFormattedName();
-
-// trait Loggable
-// {
-//     public function log(string $message): void
-//     {
-//         echo $message.PHP_EOL . '<br>';
-//     }
-// }
-
-// trait Notifiable
-// {
-//     public function notify(string $message): void
-//     {
-//         echo "Notification: {$message}";
-//     }
-// }
-
-// class User
-// {
-//     use Loggable, Notifiable;
-// }
-
-// $user = new User();
-// $user->log('Hello this is a log message. from Loggable trait.');
-// $user->notify('Hello this is a notification message. from Notifiable trait.');
-
-// trait HasUuid
-// {
-//     public function generateUuid(): string
-//     {
-//         return uniqid('user_', true);
-//     }
-// }
-
-// trait HasStatus
-// {
-//     public function isActive(): bool
-//     {
-//         return true;
-//     }
-// }
-
-// trait HasLogging
-// {
-//     public function log(string $message): void
-//     {
-//         echo '<br>'."[LOG] {$message}";
-//     }
-// }
-
-// class User
-// {
-//     use HasUuid, HasStatus, HasLogging;
-// }
-
-// $user = new User();
-
-// echo $user->generateUuid().PHP_EOL . '<br>';
-// var_dump($user->isActive());
-// $user->log('User created');
-
-// trait FileLogger
-// {
-//     public function log(): void
-//     {
-//         echo "Logging to a file".PHP_EOL . '<br>';
-//     }
-// }
-
-// trait DatabaseLogger
-// {
-//     public function log(): void
-//     {
-//         echo "Logging to a database";
-//     }
-// }
-
-// class User
-// {
-//     use FileLogger, DatabaseLogger {
-//         FileLogger::log insteadof DatabaseLogger;
-
-//         DatabaseLogger::log as logToDatabase;
-//     }
-// }
-
-// $user = new User();
-// $user->log();
-// $user->logToDatabase();
-
-// trait UserHelper
-// {
-//     public function calculateScore(): int
-//     {
-//         return 100;
-//     }
-// }
-
-// class User
-// {
-//     use UserHelper {
-//         calculateScore as private getScore;
-//     }
-
-//     public function getScore(): int
-//     {
-//         return $this->calculateScore();
-//     }
-// }
-
-// $user = new User();
-// echo $user->getScore(); // 100
-// echo '<br>';
-// echo $user->calculateScore(); // 100
-
-// trait Greeting
-// {
-//     public function sayHello(): void
-//     {
-//         echo "Hello from trait";
-//     }
-// }
-
-// class User
-// {
-//     use Greeting;
-
-//     public function sayHello(): void
-//     {
-//         echo "Hello from class";
-//     }
-// }
-
-// $user = new User();
-// $user->sayHello();
-
-// class ParentUser
-// {
-//     public function sayHello(): void
-//     {
-//         echo "Hello from parent";
-//     }
-// }
-
-// trait Greeting
-// {
-//     public function sayHello(): void
-//     {
-//         echo "Hello from trait";
-//     }
-// }
-
-// class User extends ParentUser
-// {
-//     use Greeting;
-// }
-
-// $user = new User();
-// $user->sayHello();
-
-// trait SendsNotifications
-// {
-//     abstract protected function getRecipient(): string;
-
-//     public function sendNotification(string $message): void
-//     {
-//         $recipient = $this->getRecipient();
-
-//         echo "Sending '{$message}' to {$recipient}";
-//     }
-// }
-
-// class User
-// {
-//     use SendsNotifications;
-
-//     public function __construct(
-//         private string $email
-//     ) {}
-
-//     protected function getRecipient(): string
-//     {
-//         return $this->email;
-//     }
-// }
-
-// $user = new User('user@example.com');
-
-// $user->sendNotification('Welcome!');
-
-// trait HasapiVersion
-// {
-//     public const API_VERSION = 'v1';
-// }
-
-// class ApiClient
-// {
-//     use HasApiVersion;
-// }
-
-// echo ApiClient::API_VERSION; // v1
-
-// trait HasCounter
-// {
-//     public static int $count = 0;
-
-//     public static function increment(): void
-//     {
-//         self::$count++;
-//     }
-// }
-
-// class User
-// {
-//     use HasCounter;
-// }
-
-// User::increment();
-// User::increment();
-
-// echo User::$count;class PriceCalculator
-
-
-// class PriceCalculator
-// {
-//     public function applyDiscount(
-//         float $price,
-//         float $discountPercentage
-//     ): float {
-//         return $price - ($price * $discountPercentage / 100);
-//     }
-// }
-
-// $calculator = new PriceCalculator();
-
-// $result = $calculator->applyDiscount(100, 10);
-
-// assert($result === 90.0);
-
-
-/**
- * without using DI(dependency injection)
- */
-// class StripePayment
-// {
-//     public function pay(float $amount): string
-//     {
-//         return "Paid {$amount} using Stripe";
-//     }
-// }
-
-// class OrderService
-// {
-//     private StripePayment $payment;
-
-//     public function __construct()
-//     {
-//         $this->payment = new StripePayment();
-//     }
-
-//     public function checkout(float $amount): string
-//     {
-//         return $this->payment->pay($amount);
-//     }
-// }
-
-// $orderService = new OrderService();
-
-// echo $orderService->checkout(500);
-
-/*
- * using DI(dependency injection)
- */
-// class StripePayment
-// {
-//     public function pay(float $amount): string
-//     {
-//         return "Paid {$amount} using Stripe";
-//     }
-// }
-
-// class OrderService
-// {
-//     public function __construct(
-//         private StripePayment $payment
-//     ) {}
-
-//     public function checkout(float $amount): string
-//     {
-//         return $this->payment->pay($amount);
-//     }
-// }
-
-// $payment = new StripePayment();
-
-// $orderService = new OrderService($payment);
-
-// echo $orderService->checkout(500);
-
-// class Mailer
-// {
-//     public function send(string $message): void
-//     {
-//         echo "Sending email: {$message}";
-//     }
-// }
-
-// class OrderService
-// {
-
-//     public function __construct(private Mailer $mailer)
-//     {
-//     }
-
-//     public function placeOrder(): void
-//     {
-//         $this->mailer->send('Order placed');
-//     }
-// }
-// $mailer = new Mailer();
-
-// $orderService = new OrderService($mailer);
-// echo $orderService->placeOrder();
-
-class DatabaseConnection
-{
-    public function connect(): string
-    {
-        return 'Database connected';
-    }
-}
-
-class UserRepository
+ class UserService
 {
     public function __construct(
-        private DatabaseConnection $database
-    ) {}
+        // private UserRepository $repository,
+        // protected string $format,
+        // public int $limit,
 
-    public function find(int $id): string
+        private string $name,
+    ) {
+    }
+
+    // public function findUser(int $id): string
+    // {
+    //     return "User ID: {$id}";
+    // }
+
+     public function name(): string
     {
-        return $this->database->connect()
-            . " | Finding user {$id}";
+        return $this->name;
     }
 }
 
-class UserService
-{
-    public function __construct(
-        private UserRepository $users
-    ) {}
+$reflection = new ReflectionClass(UserService::class);
 
-    public function getUser(int $id): string
-    {
-        return $this->users->find($id);
-    }
-}
+$service = $reflection->newInstanceArgs(['Mohammed']);
 
-class Container
-{
-    /**
-     * Summary of bindings
-     * @var array
-     *
-     * This stores the construction instructions.
-     * Conceptually:
-     * [
-     * DatabaseConnection::class => $factory,
-     * UserRepository::class => $factory,
-     * UserService::class => $factory,
-     * ]
-     * (The factory) is a callable that knows how to construct an object.
-     */
-    private array $bindings = [];
+echo $service->name();
 
-     /**
-      * Summary of bind
-      * @param string $abstract $abstract identifies the thing we want to resolve. It could be a concrete class name or an interface name.
-      * @param callable $factory $factory defines how to create the corresponding instance.
-      * @return void
-      */
-     public function bind(
-        string $abstract,
-        callable $factory
-    ): void {
-        $this->bindings[$abstract] = $factory;
-    }
+// foreach ($reflection->getMethods() as $method) {
+//     echo $method->getName() . PHP_EOL . "<br>";
+// }
 
-    /**
-     * This retrieves the registered factory and invokes it, passing the container itself.
-     * Passing the container allows a factory to resolve other dependencies.
-     * Summary of make
-     * @param string $abstract
-     * @throws RuntimeException
-     * @return mixed
-     */
-    public function make(string $abstract): mixed
-    {
-        if (!isset($this->bindings[$abstract])) {
-            throw new RuntimeException(
-                "No binding registered for {$abstract}"
-            );
-        }
+// foreach ($reflection->getProperties() as $property) {
+//     echo $property->getName() . PHP_EOL . "<br>";
+//     echo $property->getType() . PHP_EOL . "<br>";
+// }
 
-        return ($this->bindings[$abstract])($this);
-    }
-}
+// class Logger
+// {
+//     public function log(): string
+//     {
+//         return 'Logging...';
+//     }
+// }
 
-$container = new Container();
+// $reflection = new ReflectionClass(Logger::class);
 
-$container->bind(
-    DatabaseConnection::class,
-    fn (Container $container) => new DatabaseConnection()
-);
+// $logger = $reflection->newInstance();
 
-$container->bind(
-    UserRepository::class,
-    fn (Container $container) => new UserRepository(
-        $container->make(DatabaseConnection::class)
-    )
-);
-
-$container->bind(
-    UserService::class,
-    fn (Container $container) => new UserService(
-        $container->make(UserRepository::class)
-    )
-);
-
-$userService = $container->make(UserService::class);
-echo $userService->getUser(10);
+// echo $logger->log();
