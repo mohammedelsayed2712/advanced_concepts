@@ -208,4 +208,81 @@ $database = new DatabaseConnection();
 $repository = new UserRepository($database);
 $userService = new UserService($repository);
 
-echo $userService->findUser(1);
+// echo $userService->findUser(1);
+
+class Container
+{
+    private array $factories = [];
+
+    public function bind(string $id, callable $factory): void
+    {
+        $this->factories[$id] = $factory; // This line stores the factory inside the array.
+    }
+
+    public function make(string $id): mixed
+    {
+        if (!isset($this->factories[$id])) {
+            throw new RuntimeException(
+                "No factory registered for {$id}"
+            );
+        }
+
+        return ($this->factories[$id])($this);
+    }
+}
+
+// now register factories
+$container = new Container();
+
+$container->bind(
+    DatabaseConnection::class,
+    fn (Container $container) => new DatabaseConnection()
+);
+
+$container->bind(
+    UserRepository::class,
+    fn (Container $c) => new UserRepository (
+        $c->make(DatabaseConnection::class)
+    )
+);
+
+$container->bind(
+    UserService::class,
+    fn(Container $c) => new UserService (
+        $c->make(UserRepository::class)
+    )
+);
+
+$service = $container->make(UserService::class);
+
+$UnknownService = $container->make('UnknownService');
+// echo $UnknownService  . "<br>";
+var_dump($UnknownService);
+
+// $service1 = $container->make(UserService::class);
+// $service2 = $container->make(UserService::class);
+// var_dump($service1);
+// echo "<br>";
+// var_dump($service2);
+// echo "<br>";
+
+// // echo $service->findUser(123);
+// var_dump($service1 === $service2);
+
+// class container
+// {
+//     private array $instances = [];
+
+//     public function singleton(
+//         string $id,
+//         callable $factory
+//     ): void {
+//         $this->factories[$id] = function (Container $container) use ($id, $factory) {
+//             if (!array_key_exists($id, $container->instances)) {
+//                 $container->instances[$id] = $factory($container);
+//             }
+
+//             return $container->instances[$id];
+//         };
+//     }
+// }
