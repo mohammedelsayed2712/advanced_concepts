@@ -169,95 +169,95 @@
 
 // echo $logger->log();
 
-class DatabaseConnection
-{
-    public function connect(): string
-    {
-        return 'Database connected';
-    }
-}
+// class DatabaseConnection
+// {
+//     public function connect(): string
+//     {
+//         return 'Database connected';
+//     }
+// }
 
-class UserRepository
-{
-    public function __construct(
-        private DatabaseConnection $database
-    ) {
-    }
+// class UserRepository
+// {
+//     public function __construct(
+//         private DatabaseConnection $database
+//     ) {
+//     }
 
-    public function find(int $id): string
-    {
-        return $this->database->connect()
-            . " | Finding user {$id}";
-    }
-}
+//     public function find(int $id): string
+//     {
+//         return $this->database->connect()
+//             . " | Finding user {$id}";
+//     }
+// }
 
-class UserService
-{
-    public function __construct(
-        private UserRepository $repository
-    ) {
-    }
+// class UserService
+// {
+//     public function __construct(
+//         private UserRepository $repository
+//     ) {
+//     }
 
-    public function findUser(int $id): string
-    {
-        return $this->repository->find($id);
-    }
-}
+//     public function findUser(int $id): string
+//     {
+//         return $this->repository->find($id);
+//     }
+// }
 
-$database = new DatabaseConnection();
-$repository = new UserRepository($database);
-$userService = new UserService($repository);
+// $database = new DatabaseConnection();
+// $repository = new UserRepository($database);
+// $userService = new UserService($repository);
 
 // echo $userService->findUser(1);
 
-class Container
-{
-    private array $factories = [];
+// class Container
+// {
+//     private array $factories = [];
 
-    public function bind(string $id, callable $factory): void
-    {
-        $this->factories[$id] = $factory; // This line stores the factory inside the array.
-    }
+//     public function bind(string $id, callable $factory): void
+//     {
+//         $this->factories[$id] = $factory; // This line stores the factory inside the array.
+//     }
 
-    public function make(string $id): mixed
-    {
-        if (!isset($this->factories[$id])) {
-            throw new RuntimeException(
-                "No factory registered for {$id}"
-            );
-        }
+//     public function make(string $id): mixed
+//     {
+//         if (!isset($this->factories[$id])) {
+//             throw new RuntimeException(
+//                 "No factory registered for {$id}"
+//             );
+//         }
 
-        return ($this->factories[$id])($this);
-    }
-}
+//         return ($this->factories[$id])($this);
+//     }
+// }
 
 // now register factories
-$container = new Container();
+// $container = new Container();
 
-$container->bind(
-    DatabaseConnection::class,
-    fn (Container $container) => new DatabaseConnection()
-);
+// $container->bind(
+//     DatabaseConnection::class,
+//     fn (Container $container) => new DatabaseConnection()
+// );
 
-$container->bind(
-    UserRepository::class,
-    fn (Container $c) => new UserRepository (
-        $c->make(DatabaseConnection::class)
-    )
-);
+// $container->bind(
+//     UserRepository::class,
+//     fn (Container $c) => new UserRepository (
+//         $c->make(DatabaseConnection::class)
+//     )
+// );
 
-$container->bind(
-    UserService::class,
-    fn(Container $c) => new UserService (
-        $c->make(UserRepository::class)
-    )
-);
+// $container->bind(
+//     UserService::class,
+//     fn(Container $c) => new UserService (
+//         $c->make(UserRepository::class)
+//     )
+// );
 
-$service = $container->make(UserService::class);
+// $service = $container->make(UserService::class);
 
-$UnknownService = $container->make('UnknownService');
-// echo $UnknownService  . "<br>";
-var_dump($UnknownService);
+// $UnknownService = $container->make('UnknownService');
+// // echo $UnknownService  . "<br>";
+// var_dump($UnknownService);
 
 // $service1 = $container->make(UserService::class);
 // $service2 = $container->make(UserService::class);
@@ -286,3 +286,206 @@ var_dump($UnknownService);
 //         };
 //     }
 // }
+
+// class EmailSender
+// {
+//     public function send(string $message): void
+//     {
+//         echo "Sending email: {$message}";
+//     }
+// }
+
+// class OrderService
+// {
+//     private EmailSender $sender;
+
+//     public function __construct()
+//     {
+//         $this->sender = new EmailSender();
+//     }
+
+//     public function placeOrder(): void
+//     {
+//         $this->sender->send('Your order has been placed.');
+//     }
+// }
+
+// $orderService = new OrderService();
+// $orderService->placeOrder();
+
+// function getNumbers(): array
+// {
+//     $numbers = [];
+
+//     for($i = 1;  $i <= 1000000; $i++) {
+//         $numbers[] = $i;
+//     }
+
+//     return $numbers;
+// }
+// $numbers = getNumbers();
+// foreach ($numbers as $number) {
+//     echo $number . PHP_EOL;
+// }
+
+// function getNumbers(): Generator
+// {
+//     yield 1;
+//     yield 2;
+//     yield 3;
+// }
+
+// echo getNumbers()->current() . PHP_EOL;
+// echo getNumbers()->next() . PHP_EOL;
+// echo getNumbers()->current() . PHP_EOL;
+
+// foreach (getNumbers() as $number) {
+//     echo $number . PHP_EOL;
+// }
+
+// function getValue(): int
+// {
+//     return 10;
+// }
+
+// echo getValue();
+
+// echo $value;
+
+// function generateNumbers(): Generator
+// {
+//     echo "Start" . "<br>";
+
+//     yield 1;
+
+//     echo "After first yield\n". "<br>";
+
+//     yield 2;
+
+//     echo "After second yield\n". "<br>";
+
+//     yield 3;
+
+//     echo "Finished\n". "<br>";
+// }
+
+// echo "Before calling function". "<br>";
+// $generator = generateNumbers();
+
+// foreach ($generator as $number) {
+//     echo "Number: {$number}" . "<br>";
+// }
+// echo "After calling function\n";
+
+
+// function test(): Generator
+// {
+//     echo "Function started\n". "<br>";
+
+//     yield 100;
+
+//     echo "Function resumed\n". "<br>";
+
+//     yield 200;
+// }
+
+// $generator = test();
+
+// echo "Generator created\n". "<br>";
+
+// echo $generator->current() . "<br>"; // Starts execution; 100
+
+// echo $generator->key() . "<br>";
+
+// $generator->next();                // Resumes execution
+
+// echo $generator->current() . "<br>"; // 200
+
+// function generateNumbers(): Generator
+// {
+//     yield 10;
+//     yield 20;
+//     yield 30;
+// }
+
+// $numbers = iterator_to_array(generateNumbers());
+
+// print_r($numbers);
+
+// function getUsers(): Generator
+// {
+//     yield [
+//         'id' => 1,
+//         'name' => 'Ahmed',
+//     ];
+
+//     yield [
+//         'id' => 2,
+//         'name' => 'Sara',
+//     ];
+
+//     yield [
+//         'id' => 3,
+//         'name' => 'Ali',
+//     ];
+// }
+
+// function numbersArray(int $limit): array
+// {
+//     $numbers = [];
+
+//     for ($i = 1; $i <= $limit; $i++) {
+//         $numbers[] = $i;
+//     }
+
+//     return $numbers;
+// }
+
+// function getNumbers(): Generator
+// {
+//     yield 1;
+//     yield 2;
+//     yield 3;
+// }
+
+// function getAllNumbers(): Generator
+// {
+//     yield from getNumbers();
+
+//     yield 4;
+//     yield 5;
+// }
+
+// foreach (getAllNumbers() as $number) {
+//     echo $number . "<br>";
+// }
+
+// function calculate(): Generator
+// {
+//     yield 10;
+//     yield 20;
+
+//     return 999;
+// }
+
+// $generator = calculate();
+
+// foreach ($generator as $value) {
+//     echo $value . PHP_EOL;
+// }
+
+// echo 'Final result: ' . $generator->getReturn();
+
+
+function receiver(): Generator
+{
+    $value = yield 'Ready';
+
+    yield 'Received: ' . $value;
+}
+
+$generator = receiver();
+
+echo $generator->current() . PHP_EOL;
+
+echo $generator->send('Hello') . PHP_EOL;
