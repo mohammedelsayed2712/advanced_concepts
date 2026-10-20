@@ -490,23 +490,84 @@
 
 // echo $generator->send('Hello') . PHP_EOL;
 
-function process(): Generator
-{
-    try {
-        yield 'Processing';
+// function process(): Generator
+// {
+//     try {
+//         yield 'Processing';
 
-        yield 'Still processing';
-    } catch (RuntimeException $exception) {
-        yield 'Handled: ' . $exception->getMessage();
+//         yield 'Still processing';
+//     } catch (RuntimeException $exception) {
+//         yield 'Handled: ' . $exception->getMessage();
+//     }
+// }
+
+// $generator = process();
+
+// echo $generator->current() . "<br>";
+// echo $generator->next();
+// echo $generator->current() . "<br>";
+
+// echo $generator
+//     ->throw(new RuntimeException('Something went wrong'))
+//     . PHP_EOL;
+
+// function getNumbers(): array
+// {
+//     $numbers = [];
+
+//     for($i = 1;  $i <= 1000000; $i++) {
+//         $numbers[] = $i;
+//     }
+
+//     return $numbers;
+// }
+// $numbers = getNumbers();
+// foreach ($numbers as $number) {
+//     echo $number . PHP_EOL;
+// }
+
+// function getNumbers(): Generator
+// {
+//     for($i = 1;  $i <= 10; $i++) {
+//         yield $i;
+//     }
+// }
+
+// $numbers = getNumbers();
+
+// foreach ($numbers as $number) {
+//     echo $number . PHP_EOL;
+// }
+
+// function getUserDetails(): Generator
+// {
+//     yield "name" => "Mohammed";
+//     yield "email" => "oBq6a@example.com";
+//     yield "role" => "Backend Developer";
+//     // yield [
+// //         "name" => "Mohammed",
+// //         "email" => "oBq6a@example.com",
+// //         "role" => "Backend Developer",
+// //     ];
+// }
+
+// $details = getUserDetails();
+
+// foreach ($details as $key => $value) {
+//     echo $key . ": " . $value . "<br>";
+// }
+
+function getEvenNumbers($limit): Generator
+{
+    for($i = 1;  $i <= $limit; $i++) {
+        if ($i % 2 === 0) {
+            yield $i;
+        }
     }
 }
 
-$generator = process();
+$numbers = getEvenNumbers(100);
 
-echo $generator->current() . "<br>";
-echo $generator->next();
-echo $generator->current() . "<br>";
-
-echo $generator
-    ->throw(new RuntimeException('Something went wrong'))
-    . PHP_EOL;
+foreach ($numbers as $number) {
+    echo $number . PHP_EOL;
+}
