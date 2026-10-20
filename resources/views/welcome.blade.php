@@ -477,15 +477,36 @@
 // echo 'Final result: ' . $generator->getReturn();
 
 
-function receiver(): Generator
-{
-    $value = yield 'Ready';
+// function receiver(): Generator
+// {
+//     $value = yield 'Ready';
 
-    yield 'Received: ' . $value;
+//     yield 'Received: ' . $value;
+// }
+
+// $generator = receiver();
+
+// echo $generator->current() . PHP_EOL;
+
+// echo $generator->send('Hello') . PHP_EOL;
+
+function process(): Generator
+{
+    try {
+        yield 'Processing';
+
+        yield 'Still processing';
+    } catch (RuntimeException $exception) {
+        yield 'Handled: ' . $exception->getMessage();
+    }
 }
 
-$generator = receiver();
+$generator = process();
 
-echo $generator->current() . PHP_EOL;
+echo $generator->current() . "<br>";
+echo $generator->next();
+echo $generator->current() . "<br>";
 
-echo $generator->send('Hello') . PHP_EOL;
+echo $generator
+    ->throw(new RuntimeException('Something went wrong'))
+    . PHP_EOL;
