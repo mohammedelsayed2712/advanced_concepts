@@ -1,168 +1,192 @@
 <?php
 
-// $array1 = ['a' => 1, 2, 3, 4, 5];
-// $array2 = [6, 7, 'a' => 8, 9, 10];
-
-// // $array3 = array_merge($array1, $array2);
-// $array3 = [...$array1, ...$array2];
-
-// print_r($array3);
-
-// What problem do enums solve?
-
-// 1. Prevent typos
-// class Order
+// class User
 // {
-//     public string $status = 'pending';
-// }
-
-// $order = new Order();
-
-// $order->status = 'delivered'; // Valid?
-// $order->status = 'deliverd';  // Typo!
-// $order->status = 'banana';    // Nonsense!
-
-// print_r($order);
-
-// 2. Prevent magic strings
-// class Order
-// {
-//     public string $status = 'pending';
-// }
-
-//Step 2: Using constants
-
-// class OrderStatus
-// {
-//     public const PENDING = 'pending';
-//     public const PROCESSING = 'processing';
-//     public const SHIPPED = 'shipped';
-//     public const DELIVERED = 'delivered';
-//     public const CANCELLED = 'cancelled';
-// }
-
-// $status = OrderStatus::PENDING;
-
-// print_r($status);
-
-// Step 3: Using an enum
-
-// enum OrderStatus
-// {
-//     case Pending;
-//     case Processing;
-//     case Shipped;
-//     case Delivered;
-//     case Cancelled;
-// }
-
-// $status = OrderStatus::Processing
-
-
-// enum TrafficLight
-// {
-//     case Red;
-//     case Yellow;
-//     case Green;
-// }
-
-// $red = TrafficLight::Red;
-// $green = TrafficLight::Green;
-
-
-// var_dump($red);
-// echo $red->name;
-// echo '<br>';
-// var_dump($red === TrafficLight::Red); // true
-// echo '<br>';
-// var_dump($red === $green);            // false
-
-/**
- * @param (Pure Enums)
- * Cases have names but no associated scalar values.
-*/
-// enum status {
-//     case Pending;
-//     case Complete;
-// }
-
-// /**
-//  * @param (Backed Enums)
-//  * Cases have associated string or integer values.
-// */
-// enum OrderStatus: string
-// {
-//     case Pending = 'pending';
-//     case Complete = 'complete';
-// }
-
-
-// enum PaymentMethod
-// {
-//     case Cash;
-//     case Card;
-//     case BankTransfer;
-
-//     public function label(): string
-//     {
-//         return match ($this) {
-//             self::Cash => 'Cash payment',
-//             self::Card => 'Credit or debit card',
-//             self::BankTransfer => 'Bank transfer',
-//         };
+//     public function __construct(
+//         public readonly int $id,
+//         public readonly string $name
+//     ) {
 //     }
 // }
 
-// echo PaymentMethod::Card->label();
-// $method = PaymentMethod::Card;
 
-// if ($method === PaymentMethod::Card) {
-//     echo 'Customer selected card payment.';
-// }
+// $user = new User(1, "Ahmed");
 
-// var_dump($method instanceof PaymentMethod); // true
-// echo $method->name;
+// echo $user->id;   // 1
+// echo $user->name; // Ahmed
 
-// function pay(PaymentMethod $method): void
+// interface Logger
 // {
-//     echo "Payment method: {$method->name}";
+//     public function log(string $message): void;
 // }
 
-// pay(PaymentMethod::Cash);
-// pay(PaymentMethod::Card);
+// interface Cacheable
+// {
+//     public function cache(): void;
+// }
 
+// class UserService implements Logger, Cacheable
+// {
+//     public function log(string $message): void
+//     {
+//         echo $message;
+//     }
 
-enum OrderStatus: string
+//     public function cache(): void
+//     {
+//         echo "Caching user...";
+//     }
+// }
+
+// function process(Logger&Cacheable $service): void
+// {
+//     $service->log("Processing...");
+//     $service->cache();
+// }
+
+// $service = new UserService();
+
+// process($service);
+
+// class DocumentExporter
+// {
+//     public function export(): Document
+//     {
+//         return new Document();
+//     }
+// }
+
+/*
+* @params Covariance
+*/
+
+// class Animal
+// {
+//     public function speak(): string
+//     {
+//         return 'Some animal sound';
+//     }
+// }
+
+// class Dog extends Animal
+// {
+//     public function speak(): string
+//     {
+//         return 'Woof!';
+//     }
+// }
+
+// class AnimalShelter
+// {
+//     public function adopt(): Animal
+//     {
+//         return new Animal();
+//     }
+// }
+
+// class DogShelter extends AnimalShelter
+// {
+//     public function adopt(): Dog
+//     {
+//         return new Dog();
+//     }
+// }
+
+// $shelter = new DogShelter();
+// $pet = $shelter->adopt();
+// echo get_class($pet).PHP_EOL."<br>";
+// echo $pet->speak()
+
+/**
+* @params Contravariance
+*/
+// class Animal
+// {
+//     public function eat(): string
+//     {
+//         return 'Animal is eating';
+//     }
+// }
+
+// class Dog extends Animal
+// {
+//     public function bark(): string
+//     {
+//         return 'Woof!';
+//     }
+// }
+
+// class AnimalTrainer
+// {
+//     public function train(Dog $dog): string
+//     {
+//         return 'Training a dog';
+//     }
+// }
+
+// class GeneralAnimalTrainer extends AnimalTrainer
+// {
+//     public function train(Animal $animal): string
+//     {
+//         return 'Training an animal';
+//     }
+// }
+
+// $trainer = new GeneralAnimalTrainer();
+// echo $trainer->train(new Dog())."<br>";
+// echo $trainer->train(new Animal());
+
+/**
+ * Combine both concepts in one PHP program
+ */
+class Animal {}
+
+class Dog extends Animal {}
+
+class Cat extends Animal {}
+
+class AnimalService
 {
-    case Pending = 'pending';
-    case Processing = 'processing';
-    case Shipped = 'shipped';
-    case Delivered = 'delivered';
-    case Cancelled = 'cancelled';
+    // Parent accepts a Dog.
+    public function process(Dog $dog): Animal
+    {
+        return new Animal();
+    }
 }
 
-$status = OrderStatus::Shipped;
-
-echo $status->name.'<br>';
-echo $status->value.'<br>';
-
-enum HttpStatus: int
+class PetService extends AnimalService
 {
-    case Ok = 200;
-    case Created = 201;
-    case BadRequest = 400;
-    case Unauthorized = 401;
-    case NotFound = 404;
-    case InternalServerError = 500;
+    // Contravariance: accepts any Animal.
+    // Covariance: returns a Dog.
+    public function process(Animal $animal): Dog
+    {
+        return new Dog();
+    }
 }
 
-$status = HttpStatus::NotFound;
+$service = new PetService();
+$dog = $service->process(new Dog());
+$cat = $service->process(new Cat());
 
-echo $status->name.'<br>';
-echo $status->value.'<br>';
-var_dump($status->value).'<br>';
+// echo get_class($dog)."<br>";
+// echo get_class($cat);
 
-$statusFromDatabase = 'shipped';
-$status = OrderStatus::from('shipped');
-var_dump($status === OrderStatus::Shipped).'<br>';
-// $status = OrderStatus::from('unknown');
+interface PaymentResult {}
+
+class SuccessfulPayment implements PaymentResult {}
+
+class PaymentProcessor
+{
+    public function pay(): PaymentResult
+    {
+        return new SuccessfulPayment();
+    }
+}
+
+class GeideaPaymentProcessor extends PaymentProcessor
+{
+    public function pay(): SuccessfulPayment
+    {
+        return new SuccessfulPayment();
+    }
+}
