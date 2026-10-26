@@ -1,192 +1,202 @@
 <?php
 
-// class User
-// {
-//     public function __construct(
-//         public readonly int $id,
-//         public readonly string $name
-//     ) {
-//     }
-// }
-
-
-// $user = new User(1, "Ahmed");
-
-// echo $user->id;   // 1
-// echo $user->name; // Ahmed
-
-// interface Logger
-// {
-//     public function log(string $message): void;
-// }
-
-// interface Cacheable
-// {
-//     public function cache(): void;
-// }
-
-// class UserService implements Logger, Cacheable
-// {
-//     public function log(string $message): void
-//     {
-//         echo $message;
-//     }
-
-//     public function cache(): void
-//     {
-//         echo "Caching user...";
-//     }
-// }
-
-// function process(Logger&Cacheable $service): void
-// {
-//     $service->log("Processing...");
-//     $service->cache();
-// }
-
-// $service = new UserService();
-
-// process($service);
-
-// class DocumentExporter
-// {
-//     public function export(): Document
-//     {
-//         return new Document();
-//     }
-// }
-
-/*
-* @params Covariance
-*/
-
-// class Animal
-// {
-//     public function speak(): string
-//     {
-//         return 'Some animal sound';
-//     }
-// }
-
-// class Dog extends Animal
-// {
-//     public function speak(): string
-//     {
-//         return 'Woof!';
-//     }
-// }
-
-// class AnimalShelter
-// {
-//     public function adopt(): Animal
-//     {
-//         return new Animal();
-//     }
-// }
-
-// class DogShelter extends AnimalShelter
-// {
-//     public function adopt(): Dog
-//     {
-//         return new Dog();
-//     }
-// }
-
-// $shelter = new DogShelter();
-// $pet = $shelter->adopt();
-// echo get_class($pet).PHP_EOL."<br>";
-// echo $pet->speak()
-
-/**
-* @params Contravariance
-*/
-// class Animal
-// {
-//     public function eat(): string
-//     {
-//         return 'Animal is eating';
-//     }
-// }
-
-// class Dog extends Animal
-// {
-//     public function bark(): string
-//     {
-//         return 'Woof!';
-//     }
-// }
-
-// class AnimalTrainer
-// {
-//     public function train(Dog $dog): string
-//     {
-//         return 'Training a dog';
-//     }
-// }
-
-// class GeneralAnimalTrainer extends AnimalTrainer
-// {
-//     public function train(Animal $animal): string
-//     {
-//         return 'Training an animal';
-//     }
-// }
-
-// $trainer = new GeneralAnimalTrainer();
-// echo $trainer->train(new Dog())."<br>";
-// echo $trainer->train(new Animal());
-
-/**
- * Combine both concepts in one PHP program
- */
-class Animal {}
-
-class Dog extends Animal {}
-
-class Cat extends Animal {}
-
-class AnimalService
+class Animal
 {
-    // Parent accepts a Dog.
-    public function process(Dog $dog): Animal
+    public function eat(): void
     {
-        return new Animal();
+        echo "Animal is eating.". "<br>";
     }
 }
 
-class PetService extends AnimalService
+class Dog extends Animal
 {
-    // Contravariance: accepts any Animal.
-    // Covariance: returns a Dog.
-    public function process(Animal $animal): Dog
+    public function bark(): void
     {
-        return new Dog();
+        echo "Dog is barking.". "<br>";
     }
 }
 
-$service = new PetService();
-$dog = $service->process(new Dog());
-$cat = $service->process(new Cat());
+$dog = new Dog();
+$dog->eat();
+$dog->bark();
 
-// echo get_class($dog)."<br>";
-// echo get_class($cat);
-
-interface PaymentResult {}
-
-class SuccessfulPayment implements PaymentResult {}
-
-class PaymentProcessor
+class Engine
 {
-    public function pay(): PaymentResult
+    public function start(): void
     {
-        return new SuccessfulPayment();
+        echo "Engine started."."<br>";
     }
 }
 
-class GeideaPaymentProcessor extends PaymentProcessor
+class Car
 {
-    public function pay(): SuccessfulPayment
+    public function __construct(
+        private Engine $engine
+    ) {}
+
+    public function start(): void
     {
-        return new SuccessfulPayment();
+        $this->engine->start();
+
+        echo "Car is ready to drive."."<br>";
     }
 }
+
+$engine = new Engine();
+$car = new Car($engine);
+$car->start();
+echo "<br>";
+
+interface MessageSender
+{
+    public function send(string $message): void;
+}
+
+class EmailSender implements MessageSender
+{
+    public function send(string $message): void
+    {
+        echo "Email: {$message}\n";
+    }
+}
+
+class SmsSender implements MessageSender
+{
+    public function send(string $message): void
+    {
+        echo "SMS: {$message}\n";
+    }
+}
+
+class whatsappSender implements MessageSender
+{
+    public function send(string $message): void
+    {
+        echo "whatsapp: {$message}\n";
+    }
+}
+
+class NotificationService
+{
+    public function __construct(
+        private MessageSender $sender
+    ) {}
+
+    public function notify(string $message): void
+    {
+        $this->sender->send($message);
+    }
+}
+
+$emailService = new NotificationService(new EmailSender());
+$smsService = new NotificationService(new SmsSender());
+$whatsappService = new NotificationService(new whatsappSender());
+
+$emailService->notify("Welcome!");
+$smsService->notify("Your OTP is 123456.");
+$whatsappService->notify("Hello!");
+
+
+
+// abstract class PaymentGateway
+// {
+//     public function logPayment(float $amount): void
+//     {
+//         echo "Logging payment: {$amount}\n";
+//     }
+
+//     abstract public function pay(float $amount): void;
+// }
+
+// class GeideaGateway extends PaymentGateway
+// {
+//     public function pay(float $amount): void
+//     {
+//         echo "Processing Geidea payment: {$amount}\n";
+//     }
+// }
+
+// class StripeGateway extends PaymentGateway
+// {
+//     public function pay(float $amount): void
+//     {
+//         echo "Processing Stripe payment: {$amount}\n";
+//     }
+// }
+
+interface PaymentGatewayInterface
+{
+    public function pay(float $amount): void;
+}
+
+
+class GeideaGateway implements PaymentGatewayInterface
+{
+    public function pay(float $amount): void
+    {
+        echo "Paying through Geidea: {$amount}\n";
+    }
+}
+
+class StripeGateway implements PaymentGatewayInterface
+{
+    public function pay(float $amount): void
+    {
+        echo "Paying through Stripe: {$amount}\n";
+    }
+}
+
+class PaymentService
+{
+    public function __construct(
+        private PaymentGatewayInterface $gateway
+    ) {}
+
+    public function checkout(float $amount): void
+    {
+        $this->gateway->pay($amount);
+    }
+}
+
+$paymentService = new PaymentService(new GeideaGateway());
+echo "<br>";
+$paymentService->checkout(100.0);
+
+$paymentService = new PaymentService(new StripeGateway());
+echo "<br>";
+$paymentService->checkout(150.0);
+echo "<br>";
+
+interface NotificationChannel
+{
+    public function send(string $message): void;
+}
+
+class EmailChannel implements NotificationChannel {
+    public function send(string $message): void {
+        echo "Sending email: {$message}\n";
+    }
+}
+
+class SmsChannel implements NotificationChannel {
+    public function send(string $message): void {
+        echo "Sending SMS: {$message}\n";
+    }
+}
+
+class NotificationsService
+{
+    public function __construct(
+        private NotificationChannel $channel
+    ) {}
+
+    public function notify(string $message): void {
+        $this->channel->send($message);
+    }
+}
+
+$email = new NotificationsService(new EmailChannel());
+$email->notify("Hello");
+
+$sms = new NotificationsService(new SmsChannel());
+$sms->notify("Your OTP is 123456.");
